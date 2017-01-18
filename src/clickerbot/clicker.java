@@ -4,10 +4,10 @@ import java.awt.AWTException;
 import java.awt.Robot;
 import java.awt.event.InputEvent;
 
-public class clicker
+public class clicker extends Thread
 {
     public static Robot robot;
-    public static boolean set;
+    public static boolean running;
 
     public clicker()
     {
@@ -19,41 +19,52 @@ public class clicker
         {
             e.printStackTrace();
         }
-        set = true;
+        running = false;
     }
 
-    /** helper method to send the given key to the active application */
-    public static void sendKey(int keyCode)
+    public static void MouseClick()
     {
-        robot.keyPress(keyCode);
-        robot.keyRelease(keyCode);
-        robot.delay(500); // for you to see the keystroke
-    }
-
-    /** helper method to send a mouse-click to the active application */
-    public static void sendMouseClick(int x, int y)
-    {
-        robot.mouseMove(x, y);
-        robot.delay(1000); // for you to see the move
         robot.mousePress(InputEvent.BUTTON1_MASK);
+        robot.delay(5);
         robot.mouseRelease(InputEvent.BUTTON1_MASK);
+        robot.delay(5);
     }
 
-    /**click without x and y coords*/
-    public static void startSpam()
+    public void startSpam()
     {
-        while (set)
+        Thread thread = new Thread(new Runnable()
         {
-            robot.delay(10);
-            robot.mousePress(InputEvent.BUTTON1_MASK);
-            robot.delay(10);
-            robot.mouseRelease(InputEvent.BUTTON1_MASK);
+
+            @Override
+            public void run()
+            {
+                running = true;
+                loopSpam();
+            }
+
+        });
+        thread.start();
+    }
+
+    public void stopSpam()
+    {
+        running = false;
+    }
+
+    private void intervallSpam(int count)
+    {
+        for (int i = 0; i < count; i++)
+        {
+            MouseClick();
         }
     }
 
-    public static void stopSpam()
+    private void loopSpam()
     {
-        set = false;
+        while (running)
+        {
+            MouseClick();
+        }
     }
 
 }

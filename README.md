@@ -1,2 +1,4 @@
 # clickerbot
-Simple Clickerbot for ClickerHeroes
+Simple Clickerbot for ClickerHeroes <br>
+Java 1.7 is needed.
+<img src = "http://puu.sh/tqLca/793644f251.png" alt="example">
